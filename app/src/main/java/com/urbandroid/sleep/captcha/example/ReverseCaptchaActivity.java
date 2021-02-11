@@ -17,6 +17,9 @@ import java.util.Random;
 // this is the main captcha activity
 public class ReverseCaptchaActivity extends Activity {
 
+    public static String captchaText;
+    public static TextView captchaTextView;
+
     private CaptchaSupport captchaSupport; // include this in every captcha
 
     private final RemainingTimeListener remainingTimeListener = new RemainingTimeListener() {
@@ -38,14 +41,16 @@ public class ReverseCaptchaActivity extends Activity {
         captchaSupport.setRemainingTimeListener(remainingTimeListener);
 
         // show difficulty in TextView with id "difficulty", read from captchaSupport.getDifficulty()
-        final TextView difficultyView = (TextView) findViewById(R.id.difficulty);
-        difficultyView.setText(getResources().getString(R.string.difficulty, captchaSupport.getDifficulty()));
+//        final TextView difficultyView = (TextView) findViewById(R.id.difficulty);
+//        difficultyView.setText(getResources().getString(R.string.difficulty, captchaSupport.getDifficulty()));
 
         // show a random string of length = (difficulty * 3) in TextView with id "captcha_text"
-        final TextView captchaTextView = (TextView) findViewById(R.id.captcha_text);
-        final String captchaText = randomString(captchaSupport.getDifficulty() * 3);
-        captchaTextView.setText(captchaText);
 
+//        fetch data from api set the captcha text
+        this.captchaTextView = (TextView) findViewById(R.id.captcha_text);
+        this.captchaTextView.setText("asdasd");
+        FetchApi process = new FetchApi();
+        process.execute();
 
         final EditText input_text = (EditText) findViewById(R.id.input_text);
 
