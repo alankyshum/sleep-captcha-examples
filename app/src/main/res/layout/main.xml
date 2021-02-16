@@ -2,7 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="#0099cc"
+             android:background="@android:color/black"
+    android:padding="25sp"
              >
 
     <TextView
@@ -11,26 +12,13 @@
         android:layout_height="match_parent"
         android:padding="15dp"
         tools:text="23"
-        android:textColor="#33b5e5"
-        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textStyle="bold"/>
+    />
 
-
-    <TextView
-        android:id="@+id/difficulty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        tools:text="Very Simple"
-        android:textColor="#8033b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/captcha_text"
@@ -40,21 +28,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:padding="15dp"
-        tools:text="ERTNSHETKKLE"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+        tools:text="Test long string"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="italic"/>
 
     <EditText
         android:id="@+id/input_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="ERTNSHETKKLE"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
         android:focusable="true"
         android:inputType="text"
+        android:textColor="@android:color/white"
         android:layout_below="@+id/textView"
         android:layout_toLeftOf="@+id/done_button"
         android:layout_toStartOf="@+id/done_button" />
@@ -63,8 +50,7 @@
         android:id="@+id/done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:text="@string/done_button"
         android:layout_alignTop="@+id/input_text"
@@ -74,9 +60,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Type it."
-        android:textSize="18sp"
+        android:text="@string/instruction_label"
+        android:textSize="12sp"
         android:id="@+id/textView"
+        android:textColor="#99ffffff"
         android:layout_below="@+id/captcha_text"
         android:layout_centerHorizontal="true" />
 
@@ -87,6 +74,6 @@
         android:layout_below="@id/input_text"
         android:layout_marginTop="10sp"
         android:layout_centerHorizontal="true"
-        android:text="Fetch API" />
+        android:text="@string/fetch_button_text" />
 
 </RelativeLayout>
