@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        google();
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0-beta04'
@@ -16,12 +16,12 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 30
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.urbandroid.sleep.captcha.example"
         minSdkVersion 11
-        targetSdkVersion 23
+        targetSdkVersion 30
         versionCode 2
         versionName "1.1"
     }
@@ -34,5 +34,7 @@ android {
 }
 
 dependencies {
-    compile 'com.urbandroid.sleep:captcha-support:0.2.4@aar'
+    implementation 'com.urbandroid.sleep:captcha-support:0.2.4'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation'com.fasterxml.jackson.core:jackson-databind:2.0.1'
 }

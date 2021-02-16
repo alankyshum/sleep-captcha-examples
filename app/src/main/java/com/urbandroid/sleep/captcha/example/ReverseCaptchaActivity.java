@@ -17,7 +17,7 @@ import java.util.Random;
 // this is the main captcha activity
 public class ReverseCaptchaActivity extends Activity {
 
-    public static String captchaText;
+    public static String captchaText = "";
     public static TextView captchaTextView;
 
     private CaptchaSupport captchaSupport; // include this in every captcha
@@ -40,17 +40,17 @@ public class ReverseCaptchaActivity extends Activity {
         // show timeout in TextView with id "timeout"
         captchaSupport.setRemainingTimeListener(remainingTimeListener);
 
-        // show difficulty in TextView with id "difficulty", read from captchaSupport.getDifficulty()
-//        final TextView difficultyView = (TextView) findViewById(R.id.difficulty);
-//        difficultyView.setText(getResources().getString(R.string.difficulty, captchaSupport.getDifficulty()));
-
-        // show a random string of length = (difficulty * 3) in TextView with id "captcha_text"
-
-//        fetch data from api set the captcha text
         this.captchaTextView = (TextView) findViewById(R.id.captcha_text);
-        this.captchaTextView.setText("asdasd");
-        FetchApi process = new FetchApi();
-        process.execute();
+        this.captchaTextView.setText("Loading the Quote of the day");
+
+        findViewById(R.id.fetch_api_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // fetch data from api set the captcha text
+                QuotesFetcher process = new QuotesFetcher();
+                process.execute();
+            }
+        });
 
         final EditText input_text = (EditText) findViewById(R.id.input_text);
 
@@ -60,7 +60,7 @@ public class ReverseCaptchaActivity extends Activity {
             public void onClick(View v) {
                 Log.i("ReverseCaptchaText", captchaText);
                 Log.i("ReverseCaptchaInput", input_text.getText().toString());
-                if (input_text.getText().toString().equals(new StringBuilder(captchaText).reverse().toString())) {
+                if (input_text.getText().toString().equals(new StringBuilder(captchaText).toString())) {
                     captchaSupport.solved(); // .solved() broadcasts an intent back to Sleep as Android to let it know that captcha is solved
                     finish();
                 }
@@ -71,21 +71,10 @@ public class ReverseCaptchaActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         captchaSupport = CaptchaSupportFactory
-                .create(this, intent)
-                .setRemainingTimeListener(remainingTimeListener);
-
-    }
-
-    public static String randomString(int length) {
-        char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-        Random generator = new Random();
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < length; i++ ) {
-            char c = chars[generator.nextInt(chars.length)];
-            sb.append(c);
-        }
-        return sb.toString();
+            .create(this, intent)
+            .setRemainingTimeListener(remainingTimeListener);
     }
 
     @Override

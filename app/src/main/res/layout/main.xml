@@ -74,10 +74,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Write it backwards!"
+        android:text="Type it."
         android:textSize="18sp"
         android:id="@+id/textView"
         android:layout_below="@+id/captcha_text"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/fetch_api_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_text"
+        android:layout_marginTop="10sp"
+        android:layout_centerHorizontal="true"
+        android:text="Fetch API" />
 
 </RelativeLayout>
