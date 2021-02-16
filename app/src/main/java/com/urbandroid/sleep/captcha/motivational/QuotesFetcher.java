@@ -1,22 +1,23 @@
-package com.urbandroid.sleep.captcha.example;
+package com.urbandroid.sleep.captcha.motivational;
 
-import android.os.AsyncTask;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-public class QuotesFetcher extends AsyncTask<String, Void, Quote> {
+public class QuotesFetcher {
+    public static Quote fetchQuote() {
+        String fetchedResponse = QuotesFetcher.fetchQuoteResponse();
+        return QuotesFetcher.responseToObject(fetchedResponse);
+    }
 
-    @Override
-    protected Quote doInBackground(String[] params) {
-        StringBuilder fetchResponse = new StringBuilder();
-
+    private static String fetchQuoteResponse() {
         try {
+            StringBuilder fetchResponse = new StringBuilder();
             URL url = new URL("https://api.quotable.io/random");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();
@@ -27,23 +28,10 @@ public class QuotesFetcher extends AsyncTask<String, Void, Quote> {
                 fetchResponse.append(line);
             }
 
-            return this.responseToObject(fetchResponse.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return fetchResponse.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            return "";
         }
-
-        return new Quote();
-    }
-
-    @Override
-    protected void onPostExecute(Quote quote) {
-        super.onPostExecute(quote);
-
-        String displayText = String.format("\"%s\" by %s", quote.getContent(), quote.getAuthor());
-        ReverseCaptchaActivity.captchaTextView.setText(displayText);
-        ReverseCaptchaActivity.captchaText = quote.getContent();
     }
 
     /**
@@ -51,7 +39,7 @@ public class QuotesFetcher extends AsyncTask<String, Void, Quote> {
      * @param response Response from fetch
      * @return Quote object
      */
-    private Quote responseToObject(String response) {
+    private static Quote responseToObject(String response) {
         final ObjectMapper jsonMapper = new ObjectMapper();
 
         try {

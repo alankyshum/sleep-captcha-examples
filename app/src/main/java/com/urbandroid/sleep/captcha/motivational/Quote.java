@@ -1,4 +1,4 @@
-package com.urbandroid.sleep.captcha.example;
+package com.urbandroid.sleep.captcha.motivational;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

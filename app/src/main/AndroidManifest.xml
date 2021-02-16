@@ -12,7 +12,7 @@
     >
 
         <activity
-            android:name="com.urbandroid.sleep.captcha.motivational.ReverseCaptchaActivity"
+            android:name="com.urbandroid.sleep.captcha.motivational.MotivationalCaptchaActivity"
 	        android:launchMode="singleTop"
             android:label="@string/captcha_label"
             android:exported="true"

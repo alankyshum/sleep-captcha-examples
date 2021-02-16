@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- inset is used to remove border from top, it can remove border from any other side-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="-3dp"
+    android:insetBottom="-3dp"
+    android:insetRight="-3dp"
+    >
+    <shape android:id="@+id/rectangle">
+        <stroke android:width="2dp" android:color="@android:color/white" />
+        <solid android:color="@android:color/black"/>
+    </shape>
+</inset>
