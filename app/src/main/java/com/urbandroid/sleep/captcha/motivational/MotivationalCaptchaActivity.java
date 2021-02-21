@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class MotivationalCaptchaActivity extends Activity {
 
         findViewById(R.id.fetch_api_button).setOnClickListener(view -> this.showNewQuote());
         findViewById(R.id.done_button).setOnClickListener(view -> this.checkCaptcha());
+        ((EditText) findViewById(R.id.input_text)).addTextChangedListener(this.onUserTypeTexts);
     }
 
     @Override
@@ -88,10 +91,26 @@ public class MotivationalCaptchaActivity extends Activity {
 
     private void checkCaptcha() {
         final EditText input_text = (EditText) findViewById(R.id.input_text);
+        final TextView error_text = (TextView) findViewById(R.id.error_text);
 
         if (input_text.getText().toString().equals(captchaText)) {
             captchaSupport.solved(); // .solved() broadcasts an intent back to Sleep as Android to let it know that captcha is solved
             finish();
+        } else {
+            error_text.setVisibility(View.VISIBLE);
         }
     }
+
+    final private TextWatcher onUserTypeTexts = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            findViewById(R.id.error_text).setVisibility(View.INVISIBLE);
+        }
+    };
 }

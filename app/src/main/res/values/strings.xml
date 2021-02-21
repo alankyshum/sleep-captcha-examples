@@ -5,6 +5,7 @@
     <string name="difficulty">Difficulty <xliff:g id="till">%s</xliff:g></string>
     <string name="instruction_label">Type it</string>
     <string name="captcha_placeholder">(Getting …)</string>
+    <string name="error_text_content">You need to type every character in the quote.</string>
     <!-- Fetch Buttons -->
     <string name="fetch_button_text">Get new quote</string>
 </resources>
