@@ -7,12 +7,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.urbandroid.sleep.captcha.CaptchaSupport;
 import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
 import com.urbandroid.sleep.captcha.RemainingTimeListener;
+import com.urbandroid.sleep.captcha.motivational.quote.OpenApiQuotes;
+import com.urbandroid.sleep.captcha.motivational.quote.BaseQuote;
+import com.urbandroid.sleep.captcha.motivational.quote.VeggieRootQuotes;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -23,10 +29,11 @@ public class MotivationalCaptchaActivity extends Activity {
     private static String captchaText = "";
     private static final ExecutorService executorService = Executors.newFixedThreadPool(16);
     private CaptchaSupport captchaSupport; // include this in every captcha
+    private BaseQuote selectedQuoteInstance;
 
     @SuppressLint("DefaultLocale")
     private final RemainingTimeListener remainingTimeListener = (seconds, aliveTimeout) -> {
-        final TextView timeoutView = (TextView) findViewById(R.id.timeout);
+        final TextView timeoutView = findViewById(R.id.timeout);
         timeoutView.setText(String.format("%d/%s", seconds, aliveTimeout));
     };
 
@@ -34,10 +41,11 @@ public class MotivationalCaptchaActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        this.showNewQuote();
 
         captchaSupport = CaptchaSupportFactory.create(this); // include this in every captcha, in onCreate()
         captchaSupport.setRemainingTimeListener(remainingTimeListener);
+        this.initQuotesApiSourcesDropdown();
+        this.showNewQuote();
 
         findViewById(R.id.fetch_api_button).setOnClickListener(view -> this.showNewQuote());
         findViewById(R.id.done_button).setOnClickListener(view -> this.checkCaptcha());
@@ -56,7 +64,7 @@ public class MotivationalCaptchaActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        final EditText input_text = (EditText) findViewById(R.id.input_text);
+        final EditText input_text = findViewById(R.id.input_text);
         input_text.requestFocus();
     }
 
@@ -78,20 +86,51 @@ public class MotivationalCaptchaActivity extends Activity {
         captchaSupport.destroy();
     }
 
-    private void showNewQuote() {
-        final TextView captchaTextView = (TextView) findViewById(R.id.captcha_text);
+    private void initQuotesApiSourcesDropdown() {
+        // TODO these arrays live in BaseQuote + Can we dynamically create new class?
+        String[] quoteSources = new String[] {
+            OpenApiQuotes.sourceName,
+            VeggieRootQuotes.sourceName
+        };
 
-        CompletableFuture.supplyAsync(QuotesFetcher::fetchQuote, executorService)
+        BaseQuote[] quoteInstances = new BaseQuote[] {
+            new OpenApiQuotes(),
+            new VeggieRootQuotes()
+        };
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, quoteSources);
+        final Spinner quoteSourceDropdown = findViewById(R.id.quote_source_dropdown);
+        quoteSourceDropdown.setAdapter(spinnerAdapter);
+
+        quoteSourceDropdown.setSelection(0);
+        this.selectedQuoteInstance = quoteInstances[0];
+
+        quoteSourceDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int classIndex = adapterView.getSelectedItemPosition();
+                MotivationalCaptchaActivity.this.selectedQuoteInstance = quoteInstances[classIndex];
+                MotivationalCaptchaActivity.this.showNewQuote();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+    }
+
+    private void showNewQuote() {
+        final TextView captchaTextView = findViewById(R.id.captcha_text);
+
+        CompletableFuture.supplyAsync(this.selectedQuoteInstance::loadQuote, executorService)
             .thenAccept(quote -> runOnUiThread(() -> {
-                String displayText = String.format("\"%s\" by %s", quote.getContent(), quote.getAuthor());
-                captchaTextView.setText(displayText);
+                captchaTextView.setText(quote.displayText());
                 captchaText = quote.getContent();
             }));
     }
 
     private void checkCaptcha() {
-        final EditText input_text = (EditText) findViewById(R.id.input_text);
-        final TextView error_text = (TextView) findViewById(R.id.error_text);
+        final EditText input_text = findViewById(R.id.input_text);
+        final TextView error_text = findViewById(R.id.error_text);
 
         if (input_text.getText().toString().equals(captchaText)) {
             captchaSupport.solved(); // .solved() broadcasts an intent back to Sleep as Android to let it know that captcha is solved
