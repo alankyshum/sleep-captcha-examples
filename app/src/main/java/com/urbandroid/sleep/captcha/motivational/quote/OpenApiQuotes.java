@@ -3,16 +3,11 @@ package com.urbandroid.sleep.captcha.motivational.quote;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpenApiQuotes implements BaseQuote {
-    public static String sourceName = "api.quotable.io";
+    public static final String SOURCE_NAME = "api.quotable.io";
 
     private String content = "Just do it";
     private String author = "Nike Inc.";

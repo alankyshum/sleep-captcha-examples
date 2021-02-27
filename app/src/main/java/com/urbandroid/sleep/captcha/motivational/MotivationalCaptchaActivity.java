@@ -18,7 +18,7 @@ import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
 import com.urbandroid.sleep.captcha.RemainingTimeListener;
 import com.urbandroid.sleep.captcha.motivational.quote.OpenApiQuotes;
 import com.urbandroid.sleep.captcha.motivational.quote.BaseQuote;
-import com.urbandroid.sleep.captcha.motivational.quote.VeggieRootQuotes;
+import com.urbandroid.sleep.captcha.motivational.quote.VeggieRootQuote;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -89,13 +89,13 @@ public class MotivationalCaptchaActivity extends Activity {
     private void initQuotesApiSourcesDropdown() {
         // TODO these arrays live in BaseQuote + Can we dynamically create new class?
         String[] quoteSources = new String[] {
-            OpenApiQuotes.sourceName,
-            VeggieRootQuotes.sourceName
+            OpenApiQuotes.SOURCE_NAME,
+            VeggieRootQuote.SOURCE_NAME
         };
 
         BaseQuote[] quoteInstances = new BaseQuote[] {
             new OpenApiQuotes(),
-            new VeggieRootQuotes()
+            new VeggieRootQuote()
         };
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, quoteSources);

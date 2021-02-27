@@ -8,8 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public interface BaseQuote {
-    public static String sourceName = new String();
-
+    public static final String SOURCE_NAME = new String();
     public String getSource();
     public String getContent();
     public String getAuthor();
