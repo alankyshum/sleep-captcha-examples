@@ -87,6 +87,7 @@
         android:layout_below="@id/captcha_text"
         android:layout_alignTop="@id/fetch_api_button"
         android:layout_alignBottom="@id/fetch_api_button"
+        android:background="@android:color/white"
         android:prompt="@string/quote_source_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
