@@ -19,19 +19,33 @@
             >
 
             <!-- Should this Captcha have difficulty settings?-->
-            <meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>
+<!--            <meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>-->
 
             <intent-filter>
                 <!-- This filter is needed for the Captcha to work-->
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN"/>
 
                 <!-- This filter allows Settings for CAPTCHA -->
-                <!--<action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>-->
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
 
-                <!-- Uncomment for testing - captcha will show up in launcher as standalone app
-		        <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-                 -->
+                <!-- ! Uncomment for testing - captcha will show up in launcher as standalone app -->
+<!--		        <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+            </intent-filter>
+        </activity>
+
+<!--        README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
+        <activity
+            android:name="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaConfigActivity"
+	        android:launchMode="singleTop"
+            android:label="@string/captcha_label"
+            android:exported="true"
+            >
+
+            <meta-data android:name="com.urbandroid.sleep.captcha.meta.for_captcha" android:value="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaActivity"/>
+
+            <intent-filter>
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
             </intent-filter>
         </activity>
     </application>
