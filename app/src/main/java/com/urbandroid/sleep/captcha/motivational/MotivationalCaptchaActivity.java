@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 // this is the main captcha activity
 public class MotivationalCaptchaActivity extends Activity {
     private static String captchaText = "";
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(16);
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(2);
     private CaptchaSupport captchaSupport; // include this in every captcha
     private BaseQuote selectedQuoteInstance;
 
