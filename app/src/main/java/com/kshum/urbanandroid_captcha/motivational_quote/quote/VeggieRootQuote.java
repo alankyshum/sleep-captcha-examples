@@ -1,4 +1,4 @@
-package com.urbandroid.sleep.captcha.motivational.quote;
+package com.kshum.urbanandroid_captcha.motivational_quote.quote;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;

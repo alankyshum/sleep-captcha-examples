@@ -1,4 +1,4 @@
-package com.urbandroid.sleep.captcha.motivational;
+package com.kshum.urbanandroid_captcha.motivational_quote;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.urbandroid.sleep.captcha.CaptchaSupport;
 import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
 import com.urbandroid.sleep.captcha.RemainingTimeListener;
-import com.urbandroid.sleep.captcha.motivational.quote.OpenApiQuotes;
-import com.urbandroid.sleep.captcha.motivational.quote.BaseQuote;
-import com.urbandroid.sleep.captcha.motivational.quote.VeggieRootQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.OpenApiQuotes;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.BaseQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.VeggieRootQuote;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;

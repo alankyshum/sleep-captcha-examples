@@ -1,4 +1,4 @@
-package com.urbandroid.sleep.captcha.motivational.quote;
+package com.kshum.urbanandroid_captcha.motivational_quote.quote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
