@@ -19,7 +19,7 @@
             >
 
             <!-- Should this Captcha have difficulty settings?-->
-<!--            <meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>-->
+            <!--<meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>-->
 
             <intent-filter>
                 <!-- This filter is needed for the Captcha to work-->
@@ -29,12 +29,12 @@
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
 
                 <!-- ! Uncomment for testing - captcha will show up in launcher as standalone app -->
-<!--		        <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--                <action android:name="android.intent.action.MAIN"/>-->
+		        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
             </intent-filter>
         </activity>
 
-<!--        README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
+        <!--README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
         <activity
             android:name="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaConfigActivity"
 	        android:launchMode="singleTop"
@@ -46,6 +46,10 @@
 
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
+
+                <!--FIXME Uncomment for PROD-->
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
     </application>

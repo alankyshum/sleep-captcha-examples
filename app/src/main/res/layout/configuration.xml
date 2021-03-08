@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="25sp"
+    android:background="@android:color/black"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/settings_savedQuoteInstructionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configuration 2" />
+        android:textColor="#80FFFFFF"
+        android:textSize="12sp"
+        android:text="@string/settings_instruction__saved_quote_location" />
+
+    <RelativeLayout
+        android:layout_below="@id/settings_savedQuoteInstructionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/currentStorageLocationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5pt"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/chooseStorageLocationButton"
+            android:textColor="@android:color/white"
+            android:scrollHorizontally="false"
+            android:text="@string/settings_placeholder__pick_saved_quote_location" />
+        <Button
+            android:id="@+id/chooseStorageLocationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10sp"
+            android:text="@string/select_button"
+            tools:ignore="RelativeOverlap" />
+    </RelativeLayout>
 </RelativeLayout>

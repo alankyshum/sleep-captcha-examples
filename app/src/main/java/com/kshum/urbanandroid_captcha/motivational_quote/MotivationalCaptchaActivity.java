@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.kshum.urbanandroid_captcha.motivational_quote.storage.Storage;
 import com.urbandroid.sleep.captcha.CaptchaSupport;
 import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
 import com.urbandroid.sleep.captcha.RemainingTimeListener;
@@ -28,6 +29,8 @@ import java.util.concurrent.Executors;
 public class MotivationalCaptchaActivity extends Activity {
     private static String captchaText = "";
     private static final ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private final Storage storageService = new Storage();
+    private BaseQuote currentQuote;
     private CaptchaSupport captchaSupport; // include this in every captcha
     private BaseQuote selectedQuoteInstance;
 
@@ -87,7 +90,6 @@ public class MotivationalCaptchaActivity extends Activity {
     }
 
     private void initQuotesApiSourcesDropdown() {
-        // TODO these arrays live in BaseQuote + Can we dynamically create new class?
         String[] quoteSources = new String[] {
             OpenApiQuotes.SOURCE_NAME,
             VeggieRootQuote.SOURCE_NAME
@@ -123,8 +125,9 @@ public class MotivationalCaptchaActivity extends Activity {
 
         CompletableFuture.supplyAsync(this.selectedQuoteInstance::loadQuote, executorService)
             .thenAccept(quote -> runOnUiThread(() -> {
-                captchaTextView.setText(quote.displayText());
-                captchaText = quote.getContent();
+                currentQuote = quote;
+                captchaTextView.setText(currentQuote.displayText());
+                captchaText = currentQuote.getContent();
             }));
     }
 
@@ -134,6 +137,7 @@ public class MotivationalCaptchaActivity extends Activity {
 
         if (input_text.getText().toString().equals(captchaText)) {
             captchaSupport.solved(); // .solved() broadcasts an intent back to Sleep as Android to let it know that captcha is solved
+            storageService.saveQuote(currentQuote);
             finish();
         } else {
             error_text.setVisibility(View.VISIBLE);

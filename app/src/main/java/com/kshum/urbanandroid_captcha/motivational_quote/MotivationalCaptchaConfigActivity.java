@@ -1,39 +1,55 @@
 package com.kshum.urbanandroid_captcha.motivational_quote;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.BaseQuote;
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.OpenApiQuotes;
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.VeggieRootQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.preference.Preference;
 import com.urbandroid.sleep.captcha.CaptchaSupport;
-import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
-import com.urbandroid.sleep.captcha.RemainingTimeListener;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-// this is the main captcha activity
 public class MotivationalCaptchaConfigActivity extends Activity {
+    private static final int CREATE_SAVED_QUOTE_FILE_INTENT_ID = 1;
+    private final Preference preference = new Preference();
     private CaptchaSupport captchaSupport; // include this in every captcha
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configuration);
+        showExistingPreference();
 
-    //    TODO allow user to choose file save location
-    //    ref: https://developer.android.com/training/data-storage/shared/documents-files#java
+        findViewById(R.id.chooseStorageLocationButton).setOnClickListener(view -> this.selectSavedQuoteLocation());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_SAVED_QUOTE_FILE_INTENT_ID && resultCode == Activity.RESULT_OK) {
+            updatePreferenceOfSavedQuoteLocation(data);
+        }
+    }
+
+    private void showExistingPreference() {
+        String savedQuoteLocation = preference.get(Preference.Config.SAVED_QUOTE_LOCATION);
+        ((TextView) findViewById(R.id.currentStorageLocationText)).setText(savedQuoteLocation);
+    }
+
+    private void selectSavedQuoteLocation() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        getIntent().addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("plaintext/json");
+        intent.putExtra(Intent.EXTRA_TITLE, "savedQuotes.json");
+        startActivityForResult(intent, CREATE_SAVED_QUOTE_FILE_INTENT_ID);
+    }
+
+    private void updatePreferenceOfSavedQuoteLocation(Intent data) {
+        if (data == null) return;
+        Uri uri = data.getData();
+        preference.set(Preference.Config.SAVED_QUOTE_LOCATION, uri.toString());
+        ((TextView) findViewById(R.id.currentStorageLocationText)).setText(uri.toString());
+        // TODO if new uri is difference from appPreferences.uri, migrate file
     }
 }
