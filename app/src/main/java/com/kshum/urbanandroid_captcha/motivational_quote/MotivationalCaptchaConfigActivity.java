@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kshum.urbanandroid_captcha.motivational_quote.preference.Preference;
@@ -13,14 +11,14 @@ import com.urbandroid.sleep.captcha.CaptchaSupport;
 
 public class MotivationalCaptchaConfigActivity extends Activity {
     private static final int CREATE_SAVED_QUOTE_FILE_INTENT_ID = 1;
-    private final Preference preference = new Preference();
+    private Preference preferences;
     private CaptchaSupport captchaSupport; // include this in every captcha
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configuration);
-        showExistingPreference();
+        initPreferences();
 
         findViewById(R.id.chooseStorageLocationButton).setOnClickListener(view -> this.selectSavedQuoteLocation());
     }
@@ -32,8 +30,9 @@ public class MotivationalCaptchaConfigActivity extends Activity {
         }
     }
 
-    private void showExistingPreference() {
-        String savedQuoteLocation = preference.get(Preference.Config.SAVED_QUOTE_LOCATION);
+    private void initPreferences() {
+        preferences = new Preference(this);
+        String savedQuoteLocation = preferences.get(Preference.Config.SAVED_QUOTE_LOCATION);
         ((TextView) findViewById(R.id.currentStorageLocationText)).setText(savedQuoteLocation);
     }
 
@@ -48,7 +47,7 @@ public class MotivationalCaptchaConfigActivity extends Activity {
     private void updatePreferenceOfSavedQuoteLocation(Intent data) {
         if (data == null) return;
         Uri uri = data.getData();
-        preference.set(Preference.Config.SAVED_QUOTE_LOCATION, uri.toString());
+        preferences.set(Preference.Config.SAVED_QUOTE_LOCATION, uri.toString());
         ((TextView) findViewById(R.id.currentStorageLocationText)).setText(uri.toString());
         // TODO if new uri is difference from appPreferences.uri, migrate file
     }
