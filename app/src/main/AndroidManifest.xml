@@ -1,52 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.kshum.urbanandroid_captcha.motivational_quote"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kshum.urbanandroid_captcha.motivational_quote">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
-    >
+        android:label="@string/app_name">
         <activity
-            android:name="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaActivity"
-	        android:launchMode="singleTop"
-            android:label="@string/captcha_label"
+            android:name=".MotivationalCaptchaActivity"
             android:exported="true"
-        >
-            <!-- Should this Captcha have difficulty settings?-->
-            <!--<meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>-->
+            android:label="@string/captcha_label"
+            android:launchMode="singleTop">
+
+            <!-- Should this Captcha have difficulty settings? -->
+            <!-- <meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/> -->
 
             <intent-filter>
-                <!-- This filter is needed for the Captcha to work-->
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN"/>
 
-                <!-- This filter allows Settings for CAPTCHA -->
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
+                <!-- This filter is needed for the Captcha to work -->
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
 
                 <!-- ! Uncomment for testing - captcha will show up in launcher as standalone app -->
-		        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+                <!-- <action android:name="android.intent.action.MAIN"/> -->
             </intent-filter>
         </activity>
 
-        <!--README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
+        <!-- README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
         <activity
-            android:name="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaConfigActivity"
-	        android:launchMode="singleTop"
-            android:label="@string/captcha_label"
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         >
-            <meta-data android:name="com.urbandroid.sleep.captcha.meta.for_captcha" android:value="com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaActivity"/>
+            <meta-data
+                android:name="com.urbandroid.sleep.captcha.meta.for_captcha"
+                android:value=".MotivationalCaptchaActivity" />
 
             <intent-filter>
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG" />
 
-                <!--FIXME Uncomment for PROD-->
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
+                <!-- FIXME Uncomment for PROD -->
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
     </application>

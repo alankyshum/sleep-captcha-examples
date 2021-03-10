@@ -16,11 +16,16 @@
     <string name="done_button">Done</string>
     <string name="fetch_button_text">Get new quote</string>
 
+    <!---->
     <!--Config Layout-->
+    <!---->
+
     <!--Instruction Text-->
-    <string name="settings_placeholder__pick_saved_quote_location">Pick saved quote location</string>
+    <string name="settings_placeholder__pick_saved_quote_location">Saved quote location</string>
     <string name="settings_instruction__saved_quote_location">Saved quotes locations</string>
+    <string name="settings_quote">Quotes</string>
 
     <!--Button-->
     <string name="select_button">Select</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>
