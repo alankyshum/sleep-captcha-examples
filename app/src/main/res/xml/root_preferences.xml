@@ -1,9 +1,10 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory app:title="@string/settings_quote">
-        <EditTextPreference
+        <Preference
             app:key="saved_quote_location"
             app:title="@string/settings_placeholder__pick_saved_quote_location"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            app:summary="Not Set"/>
     </PreferenceCategory>
 </PreferenceScreen>

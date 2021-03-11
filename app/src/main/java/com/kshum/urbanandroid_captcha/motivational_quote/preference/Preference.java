@@ -1,9 +1,8 @@
 package com.kshum.urbanandroid_captcha.motivational_quote.preference;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.kshum.urbanandroid_captcha.motivational_quote.MotivationalCaptchaConfigActivity;
 import com.kshum.urbanandroid_captcha.motivational_quote.R;
 
 /**
@@ -18,9 +17,9 @@ public class Preference {
      * @see "https://developer.android.com/training/data-storage/shared-preferences"
      */
     private final SharedPreferences sharedPref;
-    private final MotivationalCaptchaConfigActivity currentActivity;
+    private final Activity currentActivity;
 
-    public Preference(MotivationalCaptchaConfigActivity currentActivity) {
+    public Preference(Activity currentActivity) {
         this.currentActivity = currentActivity;
         this.sharedPref = currentActivity.getPreferences(Context.MODE_PRIVATE);
     }
