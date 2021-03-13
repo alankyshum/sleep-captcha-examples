@@ -1,4 +1,4 @@
-package com.kshum.urbanandroid_captcha.motivational_quote;
+package com.kshum.urbanandroid_captcha.motivational_quote.setting;
 
  import android.app.Activity;
 import android.content.Intent;
@@ -11,23 +11,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+ import com.kshum.urbanandroid_captcha.motivational_quote.R;
+
 public class SettingsActivity extends AppCompatActivity {
     private static final int CREATE_SAVED_QUOTE_FILE_INTENT_ID = 1;
+    private static Setting settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = new Setting(this);
         setPreferenceContentView(savedInstanceState);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        Preference saveQuoteLocationPref = findPreference("saved_quote_location");
+        Preference saveQuoteLocationPref;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-
+            saveQuoteLocationPref = findPreference("saved_quote_location");
             assert saveQuoteLocationPref != null;
+            String userPrefSavedQuoteLocation = settings.get(Setting.Config.SAVED_QUOTE_LOCATION, "");
+            saveQuoteLocationPref.setSummary(userPrefSavedQuoteLocation);
             saveQuoteLocationPref.setOnPreferenceClickListener(preference -> intentToDocumentPicker());
         }
 
@@ -36,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == CREATE_SAVED_QUOTE_FILE_INTENT_ID && resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
-                // TODO save to shared preference
+                settings.set(Setting.Config.SAVED_QUOTE_LOCATION, uri.toString());
                 saveQuoteLocationPref.setSummary(uri.toString());
             }
         }

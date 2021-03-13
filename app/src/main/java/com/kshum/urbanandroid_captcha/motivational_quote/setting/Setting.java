@@ -1,14 +1,13 @@
-package com.kshum.urbanandroid_captcha.motivational_quote.preference;
+package com.kshum.urbanandroid_captcha.motivational_quote.setting;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.kshum.urbanandroid_captcha.motivational_quote.R;
 
 /**
  * A layer of abstraction so we can use synchronised preferences later if we want
  */
-public class Preference {
+public class Setting {
     public enum Config {
         SAVED_QUOTE_LOCATION
     }
@@ -17,11 +16,13 @@ public class Preference {
      * @see "https://developer.android.com/training/data-storage/shared-preferences"
      */
     private final SharedPreferences sharedPref;
-    private final Activity currentActivity;
 
-    public Preference(Activity currentActivity) {
-        this.currentActivity = currentActivity;
-        this.sharedPref = currentActivity.getPreferences(Context.MODE_PRIVATE);
+    public Setting(Activity currentActivity) {
+        this.sharedPref = currentActivity.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+    }
+
+    public SharedPreferences getInstance() {
+        return sharedPref;
     }
 
     public void set(Config config, String value) {
@@ -35,8 +36,11 @@ public class Preference {
     }
 
     public String get(Config config) {
+        return this.get(config, "");
+    }
+
+    public String get(Config config, String defaultValue) {
         if (config == Config.SAVED_QUOTE_LOCATION) {
-            String defaultValue = currentActivity.getResources().getString(R.string.settings_placeholder__pick_saved_quote_location);
             return sharedPref.getString(config.toString(), defaultValue);
         }
 

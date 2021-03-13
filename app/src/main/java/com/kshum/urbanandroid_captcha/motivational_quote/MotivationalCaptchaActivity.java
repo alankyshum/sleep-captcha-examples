@@ -13,21 +13,28 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.BaseQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.OpenApiQuotes;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.SavedQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.quote.VeggieRootQuote;
+import com.kshum.urbanandroid_captcha.motivational_quote.setting.Setting;
 import com.urbandroid.sleep.captcha.CaptchaSupport;
 import com.urbandroid.sleep.captcha.CaptchaSupportFactory;
 import com.urbandroid.sleep.captcha.RemainingTimeListener;
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.OpenApiQuotes;
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.BaseQuote;
-import com.kshum.urbanandroid_captcha.motivational_quote.quote.VeggieRootQuote;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 // this is the main captcha activity
 public class MotivationalCaptchaActivity extends Activity {
     private static String captchaText = "";
     private static final ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private Setting setting;
     private BaseQuote currentQuote;
     private CaptchaSupport captchaSupport; // include this in every captcha
     private BaseQuote selectedQuoteInstance;
@@ -43,6 +50,7 @@ public class MotivationalCaptchaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        setting = new Setting(this);
         captchaSupport = CaptchaSupportFactory.create(this); // include this in every captcha, in onCreate()
         captchaSupport.setRemainingTimeListener(remainingTimeListener);
         this.initQuotesApiSourcesDropdown();
@@ -88,28 +96,28 @@ public class MotivationalCaptchaActivity extends Activity {
     }
 
     private void initQuotesApiSourcesDropdown() {
-        String[] quoteSources = new String[] {
-            OpenApiQuotes.SOURCE_NAME,
-            VeggieRootQuote.SOURCE_NAME
-        };
-
-        BaseQuote[] quoteInstances = new BaseQuote[] {
+        List<BaseQuote> quoteInstances = new ArrayList<>(Arrays.asList(
             new OpenApiQuotes(),
             new VeggieRootQuote()
-        };
+        ));
 
+        if (setting.getInstance().contains(String.valueOf(Setting.Config.SAVED_QUOTE_LOCATION))) {
+            quoteInstances.add(new SavedQuote());
+        }
+
+        List<String> quoteSources = quoteInstances.stream().map(BaseQuote::getSourceName).collect(Collectors.toList());
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, quoteSources);
         final Spinner quoteSourceDropdown = findViewById(R.id.quote_source_dropdown);
         quoteSourceDropdown.setAdapter(spinnerAdapter);
 
         quoteSourceDropdown.setSelection(0);
-        this.selectedQuoteInstance = quoteInstances[0];
+        this.selectedQuoteInstance = quoteInstances.get(0);
 
         quoteSourceDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int classIndex = adapterView.getSelectedItemPosition();
-                MotivationalCaptchaActivity.this.selectedQuoteInstance = quoteInstances[classIndex];
+                MotivationalCaptchaActivity.this.selectedQuoteInstance = quoteInstances.get(classIndex);
                 MotivationalCaptchaActivity.this.showNewQuote();
             }
 

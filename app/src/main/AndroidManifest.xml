@@ -22,18 +22,19 @@
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
 
                 <!-- ! Uncomment for testing - captcha will show up in launcher as standalone app -->
-                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-                <!-- <action android:name="android.intent.action.MAIN"/> -->
+                 <category android:name="android.intent.category.LAUNCHER"/>
+                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
 
         <!-- README: https://github.com/urbandroid-team/sleep-captcha-support#captcha-configuration -->
         <activity
-            android:name=".SettingsActivity"
+            android:name=".setting.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:parentActivityName=".MotivationalCaptchaActivity"
         >
             <meta-data
                 android:name="com.urbandroid.sleep.captcha.meta.for_captcha"
@@ -41,10 +42,6 @@
 
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG" />
-
-                <!-- FIXME Uncomment for PROD -->
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
     </application>

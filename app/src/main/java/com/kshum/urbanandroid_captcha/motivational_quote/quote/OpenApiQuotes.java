@@ -1,15 +1,20 @@
 package com.kshum.urbanandroid_captcha.motivational_quote.quote;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpenApiQuotes implements BaseQuote {
-    public static final String SOURCE_NAME = "api.quotable.io";
+    @Override
+    public String getSourceName() { return "api.quotable.io"; }
 
+    @JsonProperty
     private String content = "Just do it";
+
+    @JsonProperty
     private String author = "Nike Inc.";
 
     @Override

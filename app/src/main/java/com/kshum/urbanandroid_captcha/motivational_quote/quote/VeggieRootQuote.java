@@ -9,8 +9,6 @@ import java.util.Random;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VeggieRootQuote implements BaseQuote {
-    public static final String SOURCE_NAME = "菜根譚";
-
     private final int TOTAL_NUMBER_OF_QUOTES = 360;
     private final String AUTHOR = "《菜根譚》";
     private int currentQuoteIndex = 0;
@@ -39,9 +37,13 @@ public class VeggieRootQuote implements BaseQuote {
         return this.responseToObject(fetchedResponse);
     }
 
+    @Override
+    public String getSourceName() { return "菜根譚"; }
+
     /**
      * @return the source url to fetch a random quote
      */
+    @Override
     public String getSource() {
         String baseUrl ="https://sleepasandroid-quote-default-rtdb.firebaseio.com/veggie-root-principles.json";
         return baseUrl + "?orderBy=\"$key\"&equalTo=\"" + this.currentQuoteIndex + "\"";
