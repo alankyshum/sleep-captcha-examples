@@ -37,7 +37,6 @@ public class MotivationalCaptchaActivity extends Activity {
     private Setting setting;
     private BaseQuote currentQuote;
     private CaptchaSupport captchaSupport; // include this in every captcha
-    private BaseQuote selectedQuoteInstance;
 
     @SuppressLint("DefaultLocale")
     private final RemainingTimeListener remainingTimeListener = (seconds, aliveTimeout) -> {
@@ -96,40 +95,37 @@ public class MotivationalCaptchaActivity extends Activity {
     }
 
     private void initQuotesApiSourcesDropdown() {
-        List<BaseQuote> quoteInstances = new ArrayList<>(Arrays.asList(
-            new OpenApiQuotes(),
-            new VeggieRootQuote()
-        ));
-
-        if (setting.getInstance().contains(String.valueOf(Setting.Config.SAVED_QUOTE_LOCATION))) {
-            quoteInstances.add(new SavedQuote());
-        }
+        List<BaseQuote> quoteInstances = new ArrayList<>(Arrays.asList(new OpenApiQuotes(), new VeggieRootQuote()));
+        String savedQuoteLocation = setting.get(Setting.Config.SAVED_QUOTE_LOCATION);
+        if (!savedQuoteLocation.isEmpty()) quoteInstances.add(new SavedQuote(savedQuoteLocation));
+        this.currentQuote = quoteInstances.get(0);
 
         List<String> quoteSources = quoteInstances.stream().map(BaseQuote::getSourceName).collect(Collectors.toList());
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, quoteSources);
-        final Spinner quoteSourceDropdown = findViewById(R.id.quote_source_dropdown);
+        Spinner quoteSourceDropdown = findViewById(R.id.quote_source_dropdown);
         quoteSourceDropdown.setAdapter(spinnerAdapter);
-
         quoteSourceDropdown.setSelection(0);
-        this.selectedQuoteInstance = quoteInstances.get(0);
+        quoteSourceDropdown.setOnItemSelectedListener(getQuoteSourceDropdownListener(quoteInstances));
+    }
 
-        quoteSourceDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private final AdapterView.OnItemSelectedListener getQuoteSourceDropdownListener(List<BaseQuote> quoteInstances) {
+        return new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int classIndex = adapterView.getSelectedItemPosition();
-                MotivationalCaptchaActivity.this.selectedQuoteInstance = quoteInstances.get(classIndex);
+                MotivationalCaptchaActivity.this.currentQuote = quoteInstances.get(classIndex);
                 MotivationalCaptchaActivity.this.showNewQuote();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
+        };
     }
 
     private void showNewQuote() {
         final TextView captchaTextView = findViewById(R.id.captcha_text);
 
-        CompletableFuture.supplyAsync(this.selectedQuoteInstance::loadQuote, executorService)
+        CompletableFuture.supplyAsync(this.currentQuote::loadQuote, executorService)
             .thenAccept(quote -> runOnUiThread(() -> {
                 currentQuote = quote;
                 captchaTextView.setText(currentQuote.displayText());

@@ -21,10 +21,6 @@ public class Setting {
         this.sharedPref = currentActivity.getSharedPreferences("Settings", Context.MODE_PRIVATE);
     }
 
-    public SharedPreferences getInstance() {
-        return sharedPref;
-    }
-
     public void set(Config config, String value) {
         SharedPreferences.Editor editor = sharedPref.edit();
 
